@@ -1,0 +1,47 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    # Set up Rust toolchain
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        toolchain: stable
+        
+    # Cache the cargo registry and target directory
+    - uses: Swatinem/rust-cache@v2
+    
+    # Build for Windows
+    - name: Build for Windows
+      run: cargo build --verbose --release --all-targets
+    
+    # Configure Git
+    - name: Configure Git
+      run: |
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+      shell: pwsh
+
+    - name: Add target/release contents and commit
+      run: |
+        Get-ChildItem -Path ./target/release -File | ForEach-Object {
+          git add $_.FullName
+        }
+        git commit -m "Commit changes in target/release" -a || echo "No changes to commit"
+      shell: pwsh
+
+    # Force Push to Main Branch
+    - name: Force Push to Main Branch
+      run: git push --force origin master
+      shell: pwsh
