@@ -1,0 +1,29 @@
+[package]
+name = "hkxtools"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "3.2", features = ["derive"] }
+eframe = "0.28.1"
+rfd = "0.11.0"
+anyhow = "1.0"
+egui_dnd = "0.6.0"
+winapi = { version = "0.3", features = ["winuser"] }
+tempfile = "3.2"
+quick-xml = "0.36.1"
+encoding_rs = "0.8.34"
+egui_extras = "0.28.1"
+winres = "0.1"
+
+[build-dependencies]
+winres = "0.1"
+
+[profile.release]
+strip = true
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
