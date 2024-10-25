@@ -17,6 +17,7 @@ quick-xml = "0.36.1"
 encoding_rs = "0.8.34"
 egui_extras = "0.28.1"
 winres = "0.1"
+walkdir = "2.3"
 
 [build-dependencies]
 winres = "0.1"
